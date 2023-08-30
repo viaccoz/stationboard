@@ -1,4 +1,3 @@
-/* styles.css */
 body {
 	margin: 0;
 	padding: 0;
@@ -27,7 +26,7 @@ body {
 	overflow: hidden;
 }
 
-#hint {
+.footer {
 	text-align: center;
 	color: #4285f4;
 }
