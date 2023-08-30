@@ -1,25 +1,46 @@
 $(document).ready(function () {
 	const refreshInterval = 30000;
 	const apiUrl = 'https://transport.opendata.ch/v1/connections';
-	const fields = ['from/name', 'to/name', 'connections/from/departure', 'connections/from/prognosis/departure', 'connections/duration'];
-	const validStationboardParameters = ['name', 'walk', 'from', 'to', 'via', 'transportations', 'limit', 'direct'];
+	const fields = ['from/name', 'to/name', 'connections/from/departure', 'connections/from/prognosis/departure', 'connections/from/delay', 'connections/duration'];
+	const validStationboardParameters = ['name', 'walk', 'from', 'to', 'via[]', 'transportations[]', 'limit', 'direct'];
 	const stationboards = [];
 
 	function initialize() {
+		createHint();
 		readParameters();
 		createStationboards();
 		setInterval(refreshStationboards, refreshInterval);
 		refreshStationboards();
 	}
 
+	function createHint() {
+		const element1 = new URLSearchParams();
+		element1.append('name', 'From Zurich to Bern');
+		element1.append('from', 'Zurich');
+		element1.append('to', 'Bern');
+		element1.append('via[]', 'Lugano');
+		element1.append('via[]', 'Olten');
+
+		const element2 = new URLSearchParams();
+		element2.append('walk', 5);
+		element2.append('from', 'Lausanne');
+		element2.append('to', 'Geneva');
+
+		$('#hint').attr('href', '#' + element1.toString() + '#' + element2.toString());
+	}
+
 	function readParameters() {
-		const hash = window.location.hash.substring(1);
-		for (const stationboardsParameters of hash.split('#')) {
+		const urlFragment = window.location.hash.substring(1);
+		for (const stationboardsParameters of urlFragment.split('#')) {
 			const stationboard = {};
-			for (const stationboardParameter of stationboardsParameters.split('&')) {
-				const [key, value] = stationboardParameter.split('=');
-				if (validStationboardParameters.includes(key)) {
-					stationboard[key] = decodeURIComponent(value);
+			const stationboardParameters = new URLSearchParams(stationboardsParameters);
+			for (const validStationboardParameter of validStationboardParameters) {
+				if (stationboardParameters.has(validStationboardParameter)) {
+					if (validStationboardParameter.endsWith('[]')) {
+						stationboard[validStationboardParameter] = stationboardParameters.getAll(validStationboardParameter);
+					} else {
+						stationboard[validStationboardParameter] = stationboardParameters.get(validStationboardParameter);
+					}
 				}
 			}
 			if (!Object.keys(stationboard).includes('walk')) {
@@ -60,8 +81,10 @@ $(document).ready(function () {
 						const departure = connection.from.departure;
 						const prognosisDeparture = connection.from.prognosis.departure;
 						const departureToUse = prognosisDeparture ? prognosisDeparture : departure;
+						const delay = connection.from.delay;
+						const duration = connection.duration;
 						const whenToGo = moment(departureToUse).subtract(stationboard.walk, 'm').fromNow();
-						$('#stationboard' + i + ' tbody').append('<tr><td>' + whenToGo + '</td></td>');
+						$('#stationboard' + i + ' tbody').append('<tr><td>' + whenToGo + ' (+' + delay + ', ~' + duration + ')</td></td>');
 					}
 				})
 				.fail(function() {
