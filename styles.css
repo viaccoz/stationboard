@@ -1,6 +1,12 @@
-body {
+/* Reset default styles */
+body, h1, h2, p, input, button {
 	margin: 0;
 	padding: 0;
+	border: 0;
+}
+
+/* Global styles */
+body {
 	font-family: Arial, sans-serif;
 	background-color: #f7f7f7;
 	color: #333;
@@ -12,49 +18,119 @@ body {
 	padding: 20px;
 }
 
-#title {
+.center-text {
 	text-align: center;
-	font-size: 2.5em;
-	margin-bottom: 20px;
-	color: #4285f4;
 }
 
-#stationboards {
-	background-color: #fff;
-	border-radius: 5px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Stationboard styles */
+.stationboard, .stationboard-form {
+	background-color: #f7f7f7;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	overflow: hidden;
+	padding: 20px;
+	margin: 0 auto 20px;
+	max-width: 500px;
 }
 
-.footer {
-	text-align: center;
-	color: #4285f4;
-}
-
-.stationboard {
-	width: 100%;
-	border-collapse: collapse;
-}
-
-.stationboard th,
-.stationboard td {
-	padding: 15px;
-	text-align: center;
-	border: 1px solid #ccc;
-}
-
-.stationboard th {
-	background-color: #f2f2f2;
+.stationboard-form label {
+	display: block;
+	margin-top: 10px;
 	font-weight: bold;
 }
 
+.stationboard-form input[type="text"],
+.stationboard-form input[type="number"] {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin-top: 5px;
+	font-size: 16px;
+}
+
+.stationboard-form button[type="submit"] {
+	background-color: #4285f4;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.stationboard-form button[type="submit"]:hover {
+	background-color: #357ae8;
+}
+
+/* Bookmark hint */
+.bookmark-hint {
+	background-color: #f0f0f0;
+	padding: 10px;
+	border-radius: 5px;
+	margin-top: 20px;
+	text-align: center;
+	font-size: 14px;
+}
+
+/* Footer */
+.footer {
+	text-align: center;
+	color: #4285f4;
+	font-size: 14px;
+}
+
+.footer-link {
+	font-size: 14px;
+	color: #333;
+	text-decoration: none;
+}
+
+.footer-link a {
+	color: #4285f4;
+	text-decoration: none;
+}
+
+.footer-link a:hover {
+	color: #357ae8;
+}
+
+/* Responsive design */
 @media (max-width: 600px) {
-	#title {
+	.center-text {
 		font-size: 1.8em;
 	}
 
-	.stationboard th,
-	.stationboard td {
-		padding: 10px;
+	.stationboard-form input[type="text"],
+	.stationboard-form input[type="number"],
+	.stationboard-form button[type="submit"] {
+		font-size: 14px;
 	}
+
+	.bookmark-hint {
+		font-size: 14px;
+	}
+}
+
+/* Info box */
+.info-box {
+	background-color: #f0f0f0;
+	padding: 10px;
+	border-radius: 5px;
+	margin-top: 20px;
+	text-align: center;
+	font-size: 14px;
+	max-width: 500px;
+	margin: 0 auto;
+	border: 1px solid #ccc;
+}
+
+.info-box p {
+	margin: 5px 0;
+}
+
+.form-button-container {
+	margin-top: 20px;
+	text-align: center;
 }

@@ -11,12 +11,32 @@
 </head>
 <body>
 	<div class="container">
-		<h1 id="title"></h1>
-		<div id="stationboards"></div>
-	</div>
-	<div class="footer">
-		<div><a id="hint">Example URL</a></div>
-		<div><a href="https://www.flaticon.com/free-icons/trail-running" title="trail-running icons">Trail-running icons created by Freepik - Flaticon</a></div>
+		<h2 class="center-text">When Should I Leave?</h2>
+		<div id="stationboards" class="stationboard">
+			<!-- Stationboard information will be displayed here -->
+		</div>
+		<form id="stationboardForm" class="stationboard-form">
+			<h2 class="center-text">Manage stationboards</h2>
+			<label for="from">Name:</label>
+			<input type="text" id="name" name="name" placeholder="Name">
+			<label for="from">From:</label>
+			<input type="text" id="from" name="from" placeholder="Departure station">
+			<label for="to">To:</label>
+			<input type="text" id="to" name="to" placeholder="Destination station">
+			<label for="via">Via:</label>
+			<input type="text" id="via" name="via" placeholder="Via stations (comma-separated)">
+			<label for="walk">Walk time to station (minutes):</label>
+			<input type="number" id="walk" name="walk" value="0">
+			<div class="form-button-container">
+				<button type="submit" class="center-button">Add stationboard</button>
+			</div>
+		</form>
+		<div class="info-box">
+			<p><strong>Hint:</strong> Bookmark this URL to save your stationboard settings</p>
+			<p><strong>Icon:</strong> <a href="https://www.flaticon.com/free-icons/trail-running" title="Trail-running icons">Icons by Freepik - Flaticon</a></p>
+		</div>
 	</div>
 </body>
 </html>
+
+
