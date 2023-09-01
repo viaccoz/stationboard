@@ -49,24 +49,25 @@ $(document).ready(function () {
 		if (stationboards.length === 0) {
 			$('#stationboards').append('<p class="empty-stationboard">No stationboard yet.</p>');
 		} else {
-			for (let i = 0; i < stationboards.length; i++) {
+			for (let i = 0; i < stationboards.length; i++) { // TODO: Do the numbering of stationboards in a more elegant way
 				const stationboard = stationboards[i];
 				const stationboardHTML = `
-					<table id="stationboard${i}" class="stationboard">
-						<thead>
-							<tr>
-								<th></th>
-								<th>
-									<div class="stationboard-header">
-										<div class="btn-group">
-											<button class="delete-button" data-index="${i}">Delete</button>
-										</div>
-									</div>
-								</th>
-							</tr>
-						</thead>
-						<tbody></tbody>
-					</table>`;
+					<div id="stationboard${i}">
+						<h3 class="center-text">
+							<div class="stationsboard-title"></div>
+							<button class="delete-button" data-index="${i}">Delete</button>
+						</h3>
+						<table class="stationboard">
+							<thead>
+								<tr>
+									<th>You should leave</th>
+									<th>Transport leaves</th>
+									<th>Transport status</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>`;
 				$('#stationboards').append(stationboardHTML);
 			}
 
@@ -136,7 +137,7 @@ $(document).ready(function () {
 					const fromName = data.from.name;
 					const toName = data.to.name;
 					const headingText = stationboard.name ? stationboard.name : fromName + ' → ' + toName + ' (🚶 ' + stationboard.walk + ' minutes)';
-					$('#stationboard' + i + ' tr').children().eq(0).text(headingText);
+					$('#stationboard' + i + ' .stationsboard-title').text(headingText);
 					$('#stationboard' + i + ' tbody').empty();
 					for (const connection of data.connections) {
 						const departure = connection.from.departure;
@@ -145,14 +146,15 @@ $(document).ready(function () {
 						const delay = connection.from.delay || 0;
 						const duration = connection.duration;
 
-						const whenToGo = moment(departureToUse).subtract(stationboard.walk, 'm').fromNow();
-						const delayDisplay = delay > 0 ? '(+' + delay + ' minutes)' : 'On time';
-						$('#stationboard' + i + ' tbody').append('<tr><td>' + whenToGo + '</td><td>' + delayDisplay + '</td>');
+						const shouldLeave = moment(departureToUse).subtract(stationboard.walk, 'm').fromNow();
+						const transportLeaves = moment(departureToUse).fromNow();
+						const status = delay > 0 ? '+' + delay + ' minutes' : 'On time';
+						$('#stationboard' + i + ' tbody').append('<tr><td>' + shouldLeave + '</td><td>' + transportLeaves + '</td><td>' + status + '</td>');
 					}
 				})
 				.fail(function () {
 					setUpStationboards();
-					$('#stationboard' + i + ' tbody').html('<tr><td colspan="2">Stationboards cannot be displayed.</td></tr>');
+					$('#stationboards').text('Stationboards cannot be displayed.');
 				});
 			})(i);
 		}
