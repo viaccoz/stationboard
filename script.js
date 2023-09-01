@@ -5,9 +5,9 @@ $(document).ready(function () {
 	// API URL for retrieving transportation data
 	const apiUrl = 'https://transport.opendata.ch/v1/connections';
 	// Fields to request from the API
-	const fields = ['from/name', 'to/name', 'connections/from/departure', 'connections/from/prognosis/departure', 'connections/from/delay', 'connections/duration'];
+	const fields = ['from/name', 'to/name', 'connections/from/departure', 'connections/from/prognosis/departure', 'connections/from/delay'];
 	// List of valid stationboard parameters
-	const validStationboardParameters = ['name', 'walk', 'from', 'to', 'via[]', 'transportations[]', 'limit', 'direct'];
+	const validStationboardParameters = ['name', 'walk', 'from', 'to', 'via[]'];
 	// Store stationboard configurations
 	const stationboards = [];
 
@@ -19,6 +19,7 @@ $(document).ready(function () {
 		refreshStationboards();
 		setInterval(refreshStationboards, refreshInterval);
 	}
+
 	// Read the parameters from the URL
 	function readParameters() {
 		const urlFragment = window.location.hash.substring(1);
@@ -128,9 +129,7 @@ $(document).ready(function () {
 					from: stationboard.from,
 					to: stationboard.to,
 					via: stationboard.via,
-					transportations: stationboard.transportations,
-					limit: stationboard.limit,
-					direct: stationboard.direct,
+					limit: 5,
 					fields: fields,
 				})
 				.done(function (data) {
@@ -144,7 +143,6 @@ $(document).ready(function () {
 						const prognosisDeparture = connection.from.prognosis.departure;
 						const departureToUse = prognosisDeparture || departure;
 						const delay = connection.from.delay || 0;
-						const duration = connection.duration;
 
 						const shouldLeave = moment(departureToUse).subtract(stationboard.walk, 'm').fromNow();
 						const transportLeaves = moment(departureToUse).fromNow();
